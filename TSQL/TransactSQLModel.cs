@@ -10,13 +10,11 @@ namespace CustomerImportSQL.TSQL
 
         public string TargetTable { get; set; } = null!;
 
-        public string[] IncludedColumns { get; set; } = null!;
-
-        public string[] ColumnValues { get; set; } = null!;
-
         public Dictionary<string, string> ColumnValueDict { get; set; } = null!;
 
         public string ConditionColumn { get; set; } = null!;
+
+        public string ConditionValue { get; set; } = null!;
 
         public void BuildTransactStatement()
         {
@@ -25,28 +23,22 @@ namespace CustomerImportSQL.TSQL
             {
                 case TransactSQLType.UPDATE:
                     sb.Append($"UPDATE {TargetTable} SET ");
-                    for (int i = 0; i < IncludedColumns.Length; i++)
+                    foreach (string key in ColumnValueDict.Keys)
                     {
-                        // the col values should be based on the included columns, so should be the same length 
-                        sb.Append($"{IncludedColumns[i]} = '{ColumnValues[i]}'");
-
-                        // if not on the last column, 
-                        if (i != IncludedColumns.Length - 1)
-                        {
-                            sb.Append(", ");
-                        }
+                        sb.Append($"{key} = '{ColumnValueDict[key]}', ");
                     }
-                    sb.Append($"WHERE {ConditionColumn} = ");
+                    sb.Append($"WHERE {ConditionColumn} = '{ConditionValue}'");
                     break;
                 case TransactSQLType.DELETE:
-                    sb.Append($"DELETE FROM {TargetTable} WHERE {ConditionColumn} = ");
+                    sb.Append($"DELETE FROM {TargetTable} WHERE {ConditionColumn} = '{ConditionValue}'");
                     break;
                 case TransactSQLType.INSERT:
                     sb.Append($"INSERT INTO {TargetTable} VALUES (");
-                    for(int i = 0; i < ColumnValues.Length; i++)
+                    int i = 1;
+                    foreach (string value in ColumnValueDict.Values)
                     {
-                        sb.Append($"'{ColumnValues[i]}'");
-                        if (i == ColumnValues.Length - 1)
+                        sb.Append($"'{value}'");
+                        if (i == ColumnValueDict.Keys.Count)
                         {
                             sb.Append(")");
                         }

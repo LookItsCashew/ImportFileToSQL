@@ -137,9 +137,7 @@ public partial class MainForm : Form
 
             foreach (DataGridViewRow row in CsvDataGrid.Rows)
             {
-                // configure the TSQL struct
                 TransactSqlModel model = new TransactSqlModel();
-                model.TargetTable = TableTextBox.Text;
                 
                 string[] colKeys = GetModelKeysFromIncludedColumns();
                 Dictionary<string, string> columnValues = new Dictionary<string, string>();
@@ -153,13 +151,25 @@ public partial class MainForm : Form
                     {
                         break;
                     }
+
+                    // get values for selected columns
                     if (colKeys.Contains(cell.OwningColumn.HeaderText))
                     {
                         columnValues.Add(cell.OwningColumn.HeaderText, cell.Value.ToString()!);
                         addedCols++;
                     }
+
+                    // since we're iterating each cell per row, get the value of the WHERE condition column
+                    if (cell.OwningColumn.HeaderText == (string)WhereComboBox.SelectedItem!)
+                    {
+                        model.ConditionValue = cell.Value.ToString()!;
+                    }
                 }
+                model.TargetTable = TableTextBox.Text;
                 model.ColumnValueDict = columnValues;
+                model.TransactionType = (TransactSQLType)TSQLTypeComboBox.SelectedItem!;
+                model.ConditionColumn = (string)WhereComboBox.SelectedItem;
+                model.BuildTransactStatement();
                 models.Add(model);
             }
             stopwatch.Stop();

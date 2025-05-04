@@ -32,19 +32,24 @@ partial class MainForm
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-        FileImportGroupBox = new System.Windows.Forms.GroupBox();
-        FilePathLabel = new System.Windows.Forms.Label();
-        CsvImportButton = new System.Windows.Forms.Button();
-        TSQLGroupBox = new System.Windows.Forms.GroupBox();
-        WhereComboBox = new System.Windows.Forms.ComboBox();
-        WhereLabel = new System.Windows.Forms.Label();
-        ColumnLabel = new System.Windows.Forms.Label();
-        ColumnsCheckedListBox = new System.Windows.Forms.CheckedListBox();
-        TableTextBox = new System.Windows.Forms.TextBox();
-        TableLabel = new System.Windows.Forms.Label();
-        TSQLTypeLabel = new System.Windows.Forms.Label();
-        TSQLTypeComboBox = new System.Windows.Forms.ComboBox();
-        CsvDataGrid = new System.Windows.Forms.DataGridView();
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+        FileImportGroupBox = new GroupBox();
+        FilePathLabel = new Label();
+        CsvImportButton = new Button();
+        TSQLGroupBox = new GroupBox();
+        GenerateTSQLButton = new Button();
+        WhereComboBox = new ComboBox();
+        WhereLabel = new Label();
+        ColumnLabel = new Label();
+        ColumnsCheckedListBox = new CheckedListBox();
+        TableTextBox = new TextBox();
+        TableLabel = new Label();
+        TSQLTypeLabel = new Label();
+        TSQLTypeComboBox = new ComboBox();
+        CsvDataGrid = new DataGridView();
         FileImportGroupBox.SuspendLayout();
         TSQLGroupBox.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)CsvDataGrid).BeginInit();
@@ -54,37 +59,41 @@ partial class MainForm
         // 
         FileImportGroupBox.Controls.Add(FilePathLabel);
         FileImportGroupBox.Controls.Add(CsvImportButton);
-        FileImportGroupBox.Font = new System.Drawing.Font("Segoe UI Emoji", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        FileImportGroupBox.ForeColor = System.Drawing.Color.White;
-        FileImportGroupBox.Location = new System.Drawing.Point(23, 23);
+        FileImportGroupBox.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        FileImportGroupBox.ForeColor = Color.White;
+        FileImportGroupBox.Location = new Point(23, 23);
         FileImportGroupBox.Name = "FileImportGroupBox";
-        FileImportGroupBox.Size = new System.Drawing.Size(715, 333);
+        FileImportGroupBox.Size = new Size(715, 333);
         FileImportGroupBox.TabIndex = 0;
         FileImportGroupBox.TabStop = false;
         FileImportGroupBox.Text = "File Import";
         // 
         // FilePathLabel
         // 
-        FilePathLabel.Location = new System.Drawing.Point(16, 152);
+        FilePathLabel.Location = new Point(16, 152);
         FilePathLabel.Name = "FilePathLabel";
-        FilePathLabel.Size = new System.Drawing.Size(680, 49);
+        FilePathLabel.Size = new Size(680, 49);
         FilePathLabel.TabIndex = 1;
         FilePathLabel.Text = "<File Name>";
         // 
         // CsvImportButton
         // 
+        CsvImportButton.Cursor = Cursors.Hand;
         CsvImportButton.FlatAppearance.BorderSize = 0;
-        CsvImportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        CsvImportButton.Image = ((System.Drawing.Image)resources.GetObject("CsvImportButton.Image"));
-        CsvImportButton.Location = new System.Drawing.Point(16, 38);
+        CsvImportButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(177, 88, 114);
+        CsvImportButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(197, 108, 134);
+        CsvImportButton.FlatStyle = FlatStyle.Flat;
+        CsvImportButton.Image = (Image)resources.GetObject("CsvImportButton.Image");
+        CsvImportButton.Location = new Point(16, 38);
         CsvImportButton.Name = "CsvImportButton";
-        CsvImportButton.Size = new System.Drawing.Size(99, 92);
+        CsvImportButton.Size = new Size(99, 98);
         CsvImportButton.TabIndex = 0;
         CsvImportButton.UseVisualStyleBackColor = true;
         CsvImportButton.Click += CsvImportButton_Click;
         // 
         // TSQLGroupBox
         // 
+        TSQLGroupBox.Controls.Add(GenerateTSQLButton);
         TSQLGroupBox.Controls.Add(WhereComboBox);
         TSQLGroupBox.Controls.Add(WhereLabel);
         TSQLGroupBox.Controls.Add(ColumnLabel);
@@ -93,111 +102,167 @@ partial class MainForm
         TSQLGroupBox.Controls.Add(TableLabel);
         TSQLGroupBox.Controls.Add(TSQLTypeLabel);
         TSQLGroupBox.Controls.Add(TSQLTypeComboBox);
-        TSQLGroupBox.Font = new System.Drawing.Font("Segoe UI Emoji", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        TSQLGroupBox.ForeColor = System.Drawing.Color.White;
-        TSQLGroupBox.Location = new System.Drawing.Point(758, 23);
+        TSQLGroupBox.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        TSQLGroupBox.ForeColor = Color.White;
+        TSQLGroupBox.Location = new Point(758, 23);
         TSQLGroupBox.Name = "TSQLGroupBox";
-        TSQLGroupBox.Size = new System.Drawing.Size(1093, 333);
+        TSQLGroupBox.Size = new Size(1093, 333);
         TSQLGroupBox.TabIndex = 1;
         TSQLGroupBox.TabStop = false;
         TSQLGroupBox.Text = "Configure T-SQL";
         // 
+        // GenerateTSQLButton
+        // 
+        GenerateTSQLButton.BackColor = Color.FromArgb(197, 108, 134);
+        GenerateTSQLButton.Cursor = Cursors.Hand;
+        GenerateTSQLButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
+        GenerateTSQLButton.FlatAppearance.BorderSize = 5;
+        GenerateTSQLButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
+        GenerateTSQLButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
+        GenerateTSQLButton.FlatStyle = FlatStyle.Flat;
+        GenerateTSQLButton.Location = new Point(706, 155);
+        GenerateTSQLButton.Name = "GenerateTSQLButton";
+        GenerateTSQLButton.Size = new Size(295, 76);
+        GenerateTSQLButton.TabIndex = 8;
+        GenerateTSQLButton.Text = "Generate T-SQL";
+        GenerateTSQLButton.UseVisualStyleBackColor = false;
+        GenerateTSQLButton.Click += GenerateTSQLButton_Click;
+        // 
         // WhereComboBox
         // 
+        WhereComboBox.Cursor = Cursors.Hand;
+        WhereComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
         WhereComboBox.FormattingEnabled = true;
-        WhereComboBox.Location = new System.Drawing.Point(706, 78);
+        WhereComboBox.Location = new Point(706, 78);
         WhereComboBox.Name = "WhereComboBox";
-        WhereComboBox.Size = new System.Drawing.Size(295, 40);
+        WhereComboBox.Size = new Size(295, 40);
         WhereComboBox.TabIndex = 7;
+        WhereComboBox.SelectedIndexChanged += WhereComboBox_SelectedIndexChanged;
         // 
         // WhereLabel
         // 
-        WhereLabel.Location = new System.Drawing.Point(706, 38);
+        WhereLabel.Location = new Point(706, 38);
         WhereLabel.Name = "WhereLabel";
-        WhereLabel.Size = new System.Drawing.Size(381, 37);
+        WhereLabel.Size = new Size(381, 37);
         WhereLabel.TabIndex = 6;
         WhereLabel.Text = "WHERE {Column} = {Value}";
         // 
         // ColumnLabel
         // 
-        ColumnLabel.Location = new System.Drawing.Point(324, 38);
+        ColumnLabel.Location = new Point(324, 38);
         ColumnLabel.Name = "ColumnLabel";
-        ColumnLabel.Size = new System.Drawing.Size(351, 37);
+        ColumnLabel.Size = new Size(351, 37);
         ColumnLabel.TabIndex = 5;
         ColumnLabel.Text = "Select columns to include";
         // 
         // ColumnsCheckedListBox
         // 
         ColumnsCheckedListBox.FormattingEnabled = true;
-        ColumnsCheckedListBox.Location = new System.Drawing.Point(324, 78);
+        ColumnsCheckedListBox.Location = new Point(324, 78);
         ColumnsCheckedListBox.Name = "ColumnsCheckedListBox";
-        ColumnsCheckedListBox.Size = new System.Drawing.Size(351, 184);
+        ColumnsCheckedListBox.Size = new Size(351, 184);
         ColumnsCheckedListBox.TabIndex = 4;
         // 
         // TableTextBox
         // 
-        TableTextBox.Location = new System.Drawing.Point(17, 192);
+        TableTextBox.Location = new Point(17, 192);
         TableTextBox.Name = "TableTextBox";
-        TableTextBox.Size = new System.Drawing.Size(269, 39);
+        TableTextBox.Size = new Size(269, 39);
         TableTextBox.TabIndex = 3;
         // 
         // TableLabel
         // 
-        TableLabel.Location = new System.Drawing.Point(17, 152);
+        TableLabel.Location = new Point(17, 152);
         TableLabel.Name = "TableLabel";
-        TableLabel.Size = new System.Drawing.Size(160, 37);
+        TableLabel.Size = new Size(160, 37);
         TableLabel.TabIndex = 2;
         TableLabel.Text = "Table";
         // 
         // TSQLTypeLabel
         // 
-        TSQLTypeLabel.Location = new System.Drawing.Point(17, 38);
+        TSQLTypeLabel.Location = new Point(17, 38);
         TSQLTypeLabel.Name = "TSQLTypeLabel";
-        TSQLTypeLabel.Size = new System.Drawing.Size(160, 37);
+        TSQLTypeLabel.Size = new Size(160, 37);
         TSQLTypeLabel.TabIndex = 1;
         TSQLTypeLabel.Text = "T-SQL Type";
         // 
         // TSQLTypeComboBox
         // 
-        TSQLTypeComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        TSQLTypeComboBox.FormattingEnabled = true;
-        TSQLTypeComboBox.Location = new System.Drawing.Point(17, 78);
+        TSQLTypeComboBox.BackColor = Color.FromArgb(197, 108, 134);
+        TSQLTypeComboBox.Cursor = Cursors.Hand;
+        TSQLTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+        TSQLTypeComboBox.ForeColor = Color.White;
+        TSQLTypeComboBox.Location = new Point(17, 78);
         TSQLTypeComboBox.Name = "TSQLTypeComboBox";
-        TSQLTypeComboBox.Size = new System.Drawing.Size(269, 40);
+        TSQLTypeComboBox.Size = new Size(269, 40);
         TSQLTypeComboBox.TabIndex = 0;
         // 
         // CsvDataGrid
         // 
-        CsvDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)((byte)53)), ((int)((byte)92)), ((int)((byte)125)));
-        CsvDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        CsvDataGrid.AllowUserToAddRows = false;
+        CsvDataGrid.AllowUserToDeleteRows = false;
+        dataGridViewCellStyle1.BackColor = Color.FromArgb(255, 117, 130);
+        dataGridViewCellStyle1.Font = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle1.ForeColor = Color.White;
+        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(114, 90, 122);
+        CsvDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+        CsvDataGrid.BackgroundColor = Color.FromArgb(53, 92, 125);
+        CsvDataGrid.BorderStyle = BorderStyle.None;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle2.BackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle2.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle2.ForeColor = Color.White;
+        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(197, 108, 134);
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        CsvDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
         CsvDataGrid.ColumnHeadersHeight = 60;
-        CsvDataGrid.Location = new System.Drawing.Point(23, 362);
+        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle3.BackColor = Color.FromArgb(197, 108, 134);
+        dataGridViewCellStyle3.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle3.ForeColor = Color.White;
+        dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+        CsvDataGrid.DefaultCellStyle = dataGridViewCellStyle3;
+        CsvDataGrid.Location = new Point(23, 362);
         CsvDataGrid.Name = "CsvDataGrid";
+        CsvDataGrid.ReadOnly = true;
+        dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle4.BackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle4.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle4.ForeColor = Color.White;
+        dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+        CsvDataGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+        CsvDataGrid.RowHeadersVisible = false;
         CsvDataGrid.RowHeadersWidth = 62;
-        CsvDataGrid.Size = new System.Drawing.Size(1828, 555);
+        CsvDataGrid.Size = new Size(1085, 555);
         CsvDataGrid.TabIndex = 2;
         // 
         // MainForm
         // 
-        AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+        AutoScaleMode = AutoScaleMode.None;
         AutoSize = true;
-        AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-        BackColor = System.Drawing.Color.FromArgb(((int)((byte)53)), ((int)((byte)92)), ((int)((byte)125)));
-        ClientSize = new System.Drawing.Size(1874, 940);
+        AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        BackColor = Color.FromArgb(53, 92, 125);
+        ClientSize = new Size(1874, 940);
         Controls.Add(CsvDataGrid);
         Controls.Add(TSQLGroupBox);
         Controls.Add(FileImportGroupBox);
-        Font = new System.Drawing.Font("Segoe UI Emoji", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
-        ForeColor = System.Drawing.Color.White;
-        FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-        Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
-        Location = new System.Drawing.Point(22, 22);
-        Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+        Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        ForeColor = Color.White;
+        FormBorderStyle = FormBorderStyle.Fixed3D;
+        Icon = (Icon)resources.GetObject("$this.Icon");
+        Location = new Point(22, 22);
+        Margin = new Padding(5, 4, 5, 4);
         MaximizeBox = false;
-        Padding = new System.Windows.Forms.Padding(20);
-        StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+        Name = "MainForm";
+        Padding = new Padding(20);
+        StartPosition = FormStartPosition.CenterScreen;
         Text = "Customer import to SQL";
-        TransparencyKey = System.Drawing.Color.Crimson;
+        TransparencyKey = Color.Crimson;
         Load += MainForm_Load;
         FileImportGroupBox.ResumeLayout(false);
         TSQLGroupBox.ResumeLayout(false);
@@ -232,4 +297,6 @@ partial class MainForm
     private System.Windows.Forms.GroupBox FileImportGroupBox;
 
     #endregion
+
+    private Button GenerateTSQLButton;
 }
