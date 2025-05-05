@@ -7,7 +7,6 @@ namespace CustomerImportSQL.Forms;
 public partial class MainForm : Form
 {
     private const string DefaultSelectLabelText = "Select columns to include";
-    private const string DefaultWhereLabelText = "WHERE {Column} = {Value}";
 
     public MainForm()
     {
@@ -47,12 +46,6 @@ public partial class MainForm : Form
         {
             TableTextBox.Text = "";
         }
-
-        if (WhereComboBox.Items.Count > 0)
-        {
-            WhereComboBox.Items.Clear();
-            WhereLabel.Text = DefaultWhereLabelText;
-        }
     }
 
     private bool ValidateSQLInput()
@@ -63,7 +56,7 @@ public partial class MainForm : Form
             case TransactSQLType.UPDATE:
                 // validate we have enough data to generate the TSQL
                 if (TableTextBox.Text == "" || ColumnsCheckedListBox.CheckedItems.Count == 0 ||
-                    WhereComboBox.SelectedItem == null)
+                    WhereCheckedListBox.SelectedItems.Count == 0)
                 {
                     MessageBox.Show("Not enough information for UPDATE T-SQL.\n\n" +
                         "Must include a target table, at least one column for values " +
@@ -73,7 +66,7 @@ public partial class MainForm : Form
                 }
                 break;
             case TransactSQLType.DELETE:
-                if (TableTextBox.Text == "" || WhereComboBox.SelectedItem == null)
+                if (TableTextBox.Text == "" || WhereCheckedListBox.SelectedItems.Count == 0)
                 {
                     MessageBox.Show("Need at least a target table and conditional column for the WHERE clause."
                         + "Don't delete an entire table's contents...");
@@ -104,6 +97,18 @@ public partial class MainForm : Form
         return keys;
     }
 
+    private string[] GetSelectedWhereColumns()
+    {
+        string[] checkedWhere = new string[WhereCheckedListBox.CheckedItems.Count];
+
+        for (int i = 0; i < checkedWhere.Length; i++)
+        {
+            checkedWhere[i] = WhereCheckedListBox.CheckedItems[i]!.ToString()!;
+        }
+
+        return checkedWhere;
+    }
+
     #region Main Form Events Region
     private async void CsvImportButton_Click(object sender, EventArgs e)
     {
@@ -130,7 +135,7 @@ public partial class MainForm : Form
                 CsvDataGrid.DataSource = csvDataSource;
 
                 string[] headers = GetColumnHeadersAsStringArray(csvDataSource.Columns);
-                WhereComboBox.Items.AddRange(headers);
+                WhereCheckedListBox.Items.AddRange(headers);
                 ColumnsCheckedListBox.Items.AddRange(headers);
             }
         }
@@ -150,12 +155,6 @@ public partial class MainForm : Form
         TSQLTypeComboBox.DataSource = tsqlTypes;
     }
 
-    private void WhereComboBox_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        string currColumn = WhereLabel.Text.Split(' ')[1];
-        WhereLabel.Text = WhereLabel.Text.Replace(currColumn, WhereComboBox.SelectedItem!.ToString());
-    }
-
     private void GenerateTSQLButton_Click(object sender, EventArgs e)
     {
         if (!ValidateSQLInput())
@@ -171,15 +170,22 @@ public partial class MainForm : Form
             {
                 TransactSQLModel model = new TransactSQLModel();
                 
+                // selected columns
                 string[] colKeys = GetModelKeysFromIncludedColumns();
                 Dictionary<string, string> columnValues = new Dictionary<string, string>();
+
+                // where columns
+                string[] whereCols = GetSelectedWhereColumns();
+                Dictionary<string, string> whereValues = new Dictionary<string, string>();
                 
-                int addedCols = 0;
+                int addedColsCount = 0;
+                int whereColsCount = 0;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     // break out of the loop if we've already gone through all added columns, or the first cell of
                     // a row is null since this means the row is blank
-                    if (addedCols == ColumnsCheckedListBox.CheckedItems.Count || cell.Value == null)
+                    if (cell.Value == null || 
+                        (addedColsCount == ColumnsCheckedListBox.CheckedItems.Count && whereColsCount == WhereCheckedListBox.CheckedItems.Count))
                     {
                         break;
                     }
@@ -187,14 +193,15 @@ public partial class MainForm : Form
                     // get values for selected columns
                     if (colKeys.Contains(cell.OwningColumn.HeaderText))
                     {
-                        columnValues.Add(cell.OwningColumn.HeaderText, cell.Value.ToString()!);
-                        addedCols++;
+                        columnValues.Add(cell.OwningColumn.HeaderText, cell.Value!.ToString()!);
+                        addedColsCount++;
                     }
 
                     // since we're iterating each cell per row, get the value of the WHERE condition column
-                    if (cell.OwningColumn.HeaderText == (string)WhereComboBox.SelectedItem!)
+                    if (whereCols.Contains(cell.OwningColumn.HeaderText))
                     {
-                        model.ConditionValue = cell.Value.ToString()!;
+                        whereValues.Add(cell.OwningColumn.HeaderText, cell.Value.ToString()!);
+                        whereColsCount++;
                     }
                 }
 
@@ -202,7 +209,7 @@ public partial class MainForm : Form
                 model.TargetTable = TableTextBox.Text;
                 model.ColumnValueDict = columnValues;
                 model.TransactionType = (TransactSQLType)TSQLTypeComboBox.SelectedItem!;
-                model.ConditionColumn = (string)WhereComboBox.SelectedItem!;
+                model.WhereValueDict = whereValues;
                 model.BuildTransactStatement();
                 models.Add(model);
             }

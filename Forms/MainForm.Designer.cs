@@ -40,8 +40,8 @@ partial class MainForm
         FilePathLabel = new Label();
         CsvImportButton = new Button();
         TSQLGroupBox = new GroupBox();
+        WhereCheckedListBox = new CheckedListBox();
         GenerateTSQLButton = new Button();
-        WhereComboBox = new ComboBox();
         WhereLabel = new Label();
         ColumnLabel = new Label();
         ColumnsCheckedListBox = new CheckedListBox();
@@ -51,7 +51,6 @@ partial class MainForm
         TSQLTypeComboBox = new ComboBox();
         CsvDataGrid = new DataGridView();
         Results = new GroupBox();
-        ExportSQLFileButton = new Button();
         ResultsTextBox = new TextBox();
         FileImportGroupBox.SuspendLayout();
         TSQLGroupBox.SuspendLayout();
@@ -97,8 +96,8 @@ partial class MainForm
         // 
         // TSQLGroupBox
         // 
+        TSQLGroupBox.Controls.Add(WhereCheckedListBox);
         TSQLGroupBox.Controls.Add(GenerateTSQLButton);
-        TSQLGroupBox.Controls.Add(WhereComboBox);
         TSQLGroupBox.Controls.Add(WhereLabel);
         TSQLGroupBox.Controls.Add(ColumnLabel);
         TSQLGroupBox.Controls.Add(ColumnsCheckedListBox);
@@ -115,6 +114,14 @@ partial class MainForm
         TSQLGroupBox.TabStop = false;
         TSQLGroupBox.Text = "Configure T-SQL";
         // 
+        // WhereCheckedListBox
+        // 
+        WhereCheckedListBox.FormattingEnabled = true;
+        WhereCheckedListBox.Location = new Point(706, 78);
+        WhereCheckedListBox.Name = "WhereCheckedListBox";
+        WhereCheckedListBox.Size = new Size(351, 184);
+        WhereCheckedListBox.TabIndex = 9;
+        // 
         // GenerateTSQLButton
         // 
         GenerateTSQLButton.BackColor = Color.FromArgb(197, 108, 134);
@@ -124,24 +131,13 @@ partial class MainForm
         GenerateTSQLButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
         GenerateTSQLButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
         GenerateTSQLButton.FlatStyle = FlatStyle.Flat;
-        GenerateTSQLButton.Location = new Point(706, 155);
+        GenerateTSQLButton.Location = new Point(706, 267);
         GenerateTSQLButton.Name = "GenerateTSQLButton";
-        GenerateTSQLButton.Size = new Size(295, 76);
+        GenerateTSQLButton.Size = new Size(295, 60);
         GenerateTSQLButton.TabIndex = 8;
         GenerateTSQLButton.Text = "Generate T-SQL";
         GenerateTSQLButton.UseVisualStyleBackColor = false;
         GenerateTSQLButton.Click += GenerateTSQLButton_Click;
-        // 
-        // WhereComboBox
-        // 
-        WhereComboBox.Cursor = Cursors.Hand;
-        WhereComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-        WhereComboBox.FormattingEnabled = true;
-        WhereComboBox.Location = new Point(706, 78);
-        WhereComboBox.Name = "WhereComboBox";
-        WhereComboBox.Size = new Size(295, 40);
-        WhereComboBox.TabIndex = 7;
-        WhereComboBox.SelectedIndexChanged += WhereComboBox_SelectedIndexChanged;
         // 
         // WhereLabel
         // 
@@ -246,7 +242,6 @@ partial class MainForm
         // 
         // Results
         // 
-        Results.Controls.Add(ExportSQLFileButton);
         Results.Controls.Add(ResultsTextBox);
         Results.ForeColor = Color.White;
         Results.Location = new Point(1133, 362);
@@ -256,23 +251,6 @@ partial class MainForm
         Results.TabIndex = 3;
         Results.TabStop = false;
         Results.Text = "Results";
-        // 
-        // ExportSQLFileButton
-        // 
-        ExportSQLFileButton.BackColor = Color.FromArgb(197, 108, 134);
-        ExportSQLFileButton.Cursor = Cursors.Hand;
-        ExportSQLFileButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
-        ExportSQLFileButton.FlatAppearance.BorderSize = 5;
-        ExportSQLFileButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
-        ExportSQLFileButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
-        ExportSQLFileButton.FlatStyle = FlatStyle.Flat;
-        ExportSQLFileButton.Location = new Point(206, 456);
-        ExportSQLFileButton.Name = "ExportSQLFileButton";
-        ExportSQLFileButton.Size = new Size(295, 76);
-        ExportSQLFileButton.TabIndex = 9;
-        ExportSQLFileButton.Text = "Export to .sql file";
-        ExportSQLFileButton.UseVisualStyleBackColor = false;
-        ExportSQLFileButton.Visible = false;
         // 
         // ResultsTextBox
         // 
@@ -323,8 +301,6 @@ partial class MainForm
 
     private System.Windows.Forms.DataGridView CsvDataGrid;
 
-    private System.Windows.Forms.ComboBox WhereComboBox;
-
     private System.Windows.Forms.Label WhereLabel;
 
     private System.Windows.Forms.CheckedListBox ColumnsCheckedListBox;
@@ -349,5 +325,5 @@ partial class MainForm
     private Button GenerateTSQLButton;
     private GroupBox Results;
     private TextBox ResultsTextBox;
-    private Button ExportSQLFileButton;
+    private CheckedListBox WhereCheckedListBox;
 }
