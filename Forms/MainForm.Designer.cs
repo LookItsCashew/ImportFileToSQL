@@ -260,7 +260,7 @@ partial class MainForm
         ResultsTextBox.Name = "ResultsTextBox";
         ResultsTextBox.ReadOnly = true;
         ResultsTextBox.ScrollBars = ScrollBars.Vertical;
-        ResultsTextBox.Size = new Size(692, 384);
+        ResultsTextBox.Size = new Size(692, 491);
         ResultsTextBox.TabIndex = 0;
         ResultsTextBox.Visible = false;
         // 
