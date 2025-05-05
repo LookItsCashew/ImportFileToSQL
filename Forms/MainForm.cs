@@ -32,6 +32,9 @@ public partial class MainForm : Form
         return headers;
     }
 
+    /// <summary>
+    /// Reset the values of the form when a new file is selected. 
+    /// </summary>
     private void ResetFormControls()
     {
         if (ColumnsCheckedListBox.Items.Count > 0)
@@ -52,6 +55,56 @@ public partial class MainForm : Form
         }
     }
 
+    private bool ValidateSQLInput()
+    {
+        bool result = true;
+        switch ((TransactSQLType)TSQLTypeComboBox.SelectedItem!)
+        {
+            case TransactSQLType.UPDATE:
+                // validate we have enough data to generate the TSQL
+                if (TableTextBox.Text == "" || ColumnsCheckedListBox.CheckedItems.Count == 0 ||
+                    WhereComboBox.SelectedItem == null)
+                {
+                    MessageBox.Show("Not enough information for UPDATE T-SQL.\n\n" +
+                        "Must include a target table, at least one column for values " +
+                        "and a column to determine condition of the T-SQL statement.");
+
+                    result = false;
+                }
+                break;
+            case TransactSQLType.DELETE:
+                if (TableTextBox.Text == "" || WhereComboBox.SelectedItem == null)
+                {
+                    MessageBox.Show("Need at least a target table and conditional column for the WHERE clause."
+                        + "Don't delete an entire table's contents...");
+                    result = false;
+                }
+                break;
+            case TransactSQLType.INSERT:
+                if (TableTextBox.Text == "" || ColumnsCheckedListBox.CheckedItems.Count == 0)
+                {
+                    MessageBox.Show("Need a target table and the appropriate columns to perform INSERT.");
+                    result = false;
+                }
+                break;
+        }
+        return result;
+    }
+
+    private string[] GetModelKeysFromIncludedColumns()
+    {
+        string[] keys = new string[ColumnsCheckedListBox.CheckedItems.Count];
+
+        for (int i = 0; i < keys.Length; i++)
+        {
+            // this shouldn't be null if we're here
+            keys[i] = ColumnsCheckedListBox.CheckedItems[i]!.ToString()!;
+        }
+
+        return keys;
+    }
+
+    #region Main Form Events Region
     private async void CsvImportButton_Click(object sender, EventArgs e)
     {
         // this is in case the user wants to import multiple files.
@@ -103,41 +156,20 @@ public partial class MainForm : Form
         WhereLabel.Text = WhereLabel.Text.Replace(currColumn, WhereComboBox.SelectedItem!.ToString());
     }
 
-    private string[] GetModelKeysFromIncludedColumns()
-    {
-        string[] keys = new string[ColumnsCheckedListBox.CheckedItems.Count];
-
-        for (int i = 0; i < keys.Length; i++)
-        {
-            // this shouldn't be null if we're here
-            keys[i] = ColumnsCheckedListBox.CheckedItems[i]!.ToString()!;
-        }
-
-        return keys;
-    }
-
     private void GenerateTSQLButton_Click(object sender, EventArgs e)
     {
-        // validate we have enough data to generate the TSQL
-        if (TableTextBox.Text == "" || ColumnsCheckedListBox.CheckedItems.Count == 0 || 
-            WhereComboBox.SelectedItem == null)
+        if (!ValidateSQLInput())
         {
-            MessageBox.Show("Not enough information to produce T-SQL.\n\n" +
-                "Must include a target table, at least one column for values if not a DELETE, " +
-                "and a column to determine condition of the T-SQL statement.");
-
             return;
         }
 
         try
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            List<TransactSqlModel> models = new List<TransactSqlModel>();
+            List<TransactSQLModel> models = new List<TransactSQLModel>();
 
             foreach (DataGridViewRow row in CsvDataGrid.Rows)
             {
-                TransactSqlModel model = new TransactSqlModel();
+                TransactSQLModel model = new TransactSQLModel();
                 
                 string[] colKeys = GetModelKeysFromIncludedColumns();
                 Dictionary<string, string> columnValues = new Dictionary<string, string>();
@@ -165,19 +197,24 @@ public partial class MainForm : Form
                         model.ConditionValue = cell.Value.ToString()!;
                     }
                 }
+
+                // configure rest of model data
                 model.TargetTable = TableTextBox.Text;
                 model.ColumnValueDict = columnValues;
                 model.TransactionType = (TransactSQLType)TSQLTypeComboBox.SelectedItem!;
-                model.ConditionColumn = (string)WhereComboBox.SelectedItem;
+                model.ConditionColumn = (string)WhereComboBox.SelectedItem!;
                 model.BuildTransactStatement();
                 models.Add(model);
             }
-            stopwatch.Stop();
-            MessageBox.Show($"Time taken to generate T-SQL: {stopwatch.ElapsedMilliseconds}ms");
+            
+            ResultsTextBox.Visible = true;
+            //ExportSQLFileButton.Visible = true;
+            TransactSQLExport.WriteTSQLToTextBox(models, ResultsTextBox);
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
     }
+    #endregion
 }

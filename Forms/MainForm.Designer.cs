@@ -50,9 +50,13 @@ partial class MainForm
         TSQLTypeLabel = new Label();
         TSQLTypeComboBox = new ComboBox();
         CsvDataGrid = new DataGridView();
+        Results = new GroupBox();
+        ExportSQLFileButton = new Button();
+        ResultsTextBox = new TextBox();
         FileImportGroupBox.SuspendLayout();
         TSQLGroupBox.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)CsvDataGrid).BeginInit();
+        Results.SuspendLayout();
         SuspendLayout();
         // 
         // FileImportGroupBox
@@ -202,12 +206,11 @@ partial class MainForm
         CsvDataGrid.AllowUserToAddRows = false;
         CsvDataGrid.AllowUserToDeleteRows = false;
         dataGridViewCellStyle1.BackColor = Color.FromArgb(255, 117, 130);
-        dataGridViewCellStyle1.Font = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle1.Font = new Font("Segoe UI Emoji", 12F);
         dataGridViewCellStyle1.ForeColor = Color.White;
         dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(114, 90, 122);
         CsvDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
         CsvDataGrid.BackgroundColor = Color.FromArgb(53, 92, 125);
-        CsvDataGrid.BorderStyle = BorderStyle.None;
         dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = Color.FromArgb(114, 90, 122);
         dataGridViewCellStyle2.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -241,6 +244,48 @@ partial class MainForm
         CsvDataGrid.Size = new Size(1085, 555);
         CsvDataGrid.TabIndex = 2;
         // 
+        // Results
+        // 
+        Results.Controls.Add(ExportSQLFileButton);
+        Results.Controls.Add(ResultsTextBox);
+        Results.ForeColor = Color.White;
+        Results.Location = new Point(1133, 362);
+        Results.Name = "Results";
+        Results.Padding = new Padding(10);
+        Results.Size = new Size(718, 555);
+        Results.TabIndex = 3;
+        Results.TabStop = false;
+        Results.Text = "Results";
+        // 
+        // ExportSQLFileButton
+        // 
+        ExportSQLFileButton.BackColor = Color.FromArgb(197, 108, 134);
+        ExportSQLFileButton.Cursor = Cursors.Hand;
+        ExportSQLFileButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
+        ExportSQLFileButton.FlatAppearance.BorderSize = 5;
+        ExportSQLFileButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
+        ExportSQLFileButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
+        ExportSQLFileButton.FlatStyle = FlatStyle.Flat;
+        ExportSQLFileButton.Location = new Point(206, 456);
+        ExportSQLFileButton.Name = "ExportSQLFileButton";
+        ExportSQLFileButton.Size = new Size(295, 76);
+        ExportSQLFileButton.TabIndex = 9;
+        ExportSQLFileButton.Text = "Export to .sql file";
+        ExportSQLFileButton.UseVisualStyleBackColor = false;
+        ExportSQLFileButton.Visible = false;
+        // 
+        // ResultsTextBox
+        // 
+        ResultsTextBox.Font = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        ResultsTextBox.Location = new Point(13, 51);
+        ResultsTextBox.Multiline = true;
+        ResultsTextBox.Name = "ResultsTextBox";
+        ResultsTextBox.ReadOnly = true;
+        ResultsTextBox.ScrollBars = ScrollBars.Vertical;
+        ResultsTextBox.Size = new Size(692, 384);
+        ResultsTextBox.TabIndex = 0;
+        ResultsTextBox.Visible = false;
+        // 
         // MainForm
         // 
         AutoScaleMode = AutoScaleMode.None;
@@ -248,6 +293,7 @@ partial class MainForm
         AutoSizeMode = AutoSizeMode.GrowAndShrink;
         BackColor = Color.FromArgb(53, 92, 125);
         ClientSize = new Size(1874, 940);
+        Controls.Add(Results);
         Controls.Add(CsvDataGrid);
         Controls.Add(TSQLGroupBox);
         Controls.Add(FileImportGroupBox);
@@ -268,6 +314,8 @@ partial class MainForm
         TSQLGroupBox.ResumeLayout(false);
         TSQLGroupBox.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)CsvDataGrid).EndInit();
+        Results.ResumeLayout(false);
+        Results.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -299,4 +347,7 @@ partial class MainForm
     #endregion
 
     private Button GenerateTSQLButton;
+    private GroupBox Results;
+    private TextBox ResultsTextBox;
+    private Button ExportSQLFileButton;
 }
