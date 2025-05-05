@@ -51,7 +51,7 @@ namespace CustomerImportSQL.TSQL
                         sb.Append($"{key} = '{WhereValueDict[key]}'");
                         if (whereUpdateCount < WhereValueDict.Keys.Count)
                         {
-                            sb.Append(" and ");
+                            sb.Append(" AND ");
                         }
                         whereUpdateCount++;
                     }
@@ -65,7 +65,7 @@ namespace CustomerImportSQL.TSQL
                         sb.Append($"{key} = '{WhereValueDict[key]}'");
                         if (whereDeleteCount < WhereValueDict.Keys.Count)
                         {
-                            sb.Append(" and ");
+                            sb.Append(" AND ");
                         }
                         whereDeleteCount++;
                     }
