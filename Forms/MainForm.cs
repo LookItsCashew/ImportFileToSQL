@@ -11,6 +11,7 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        TransactSQLExport.SQLFileSavedEvent += OnSQLFileSavedEvent;
     }
 
     /// <summary>
@@ -109,7 +110,78 @@ public partial class MainForm : Form
         return checkedWhere;
     }
 
+    private List<TransactSQLModel>? GetTransactSQLModels()
+    {
+        List<TransactSQLModel> models = new List<TransactSQLModel>();
+        try
+        {
+            if (!ValidateSQLInput())
+            {
+                return null;
+            }
+
+            // selected columns
+            string[] colKeys = GetModelKeysFromIncludedColumns();
+
+            // where columns
+            string[] whereCols = GetSelectedWhereColumns();
+
+            foreach (DataGridViewRow row in CsvDataGrid.Rows)
+            {
+                TransactSQLModel model = new TransactSQLModel();
+
+                Dictionary<string, string> columnValues = new Dictionary<string, string>();
+                Dictionary<string, string> whereValues = new Dictionary<string, string>();
+
+                int addedColsCount = 0;
+                int whereColsCount = 0;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    // break out of the loop if we've already gone through all added columns, or the first cell of
+                    // a row is null since this means the row is blank
+                    if (cell.Value == null ||
+                        (addedColsCount == ColumnsCheckedListBox.CheckedItems.Count && whereColsCount == WhereCheckedListBox.CheckedItems.Count))
+                    {
+                        break;
+                    }
+
+                    // get values for selected columns
+                    if (colKeys.Contains(cell.OwningColumn.HeaderText))
+                    {
+                        columnValues.Add(cell.OwningColumn.HeaderText, cell.Value!.ToString()!);
+                        addedColsCount++;
+                    }
+
+                    // since we're iterating each cell per row, get the value of the WHERE condition column
+                    if (whereCols.Contains(cell.OwningColumn.HeaderText))
+                    {
+                        whereValues.Add(cell.OwningColumn.HeaderText, cell.Value.ToString()!);
+                        whereColsCount++;
+                    }
+                }
+
+                // configure rest of model data
+                model.TargetTable = TableTextBox.Text;
+                model.ColumnValueDict = columnValues;
+                model.TransactionType = (TransactSQLType)TSQLTypeComboBox.SelectedItem!;
+                model.WhereValueDict = whereValues;
+                model.BuildTransactStatement();
+                models.Add(model);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+        return models;
+    }
+
     #region Main Form Events Region
+    private void OnSQLFileSavedEvent(string fileName)
+    {
+        MessageBox.Show($"Exported SQL to {fileName}");
+    }
+
     private async void CsvImportButton_Click(object sender, EventArgs e)
     {
         // this is in case the user wants to import multiple files.
@@ -151,72 +223,42 @@ public partial class MainForm : Form
 
     private void MainForm_Load(object sender, EventArgs e)
     {
-        TransactSQLType[] tsqlTypes = [ TransactSQLType.UPDATE, TransactSQLType.INSERT, TransactSQLType.DELETE ];
+        TransactSQLType[] tsqlTypes = [TransactSQLType.UPDATE, TransactSQLType.INSERT, TransactSQLType.DELETE];
         TSQLTypeComboBox.DataSource = tsqlTypes;
     }
 
-    private void GenerateTSQLButton_Click(object sender, EventArgs e)
+    private void CopyTSQLButton_Click(object sender, EventArgs e)
     {
-        if (!ValidateSQLInput())
-        {
-            return;
-        }
-
         try
         {
-            List<TransactSQLModel> models = new List<TransactSQLModel>();
+            List<TransactSQLModel>? models = GetTransactSQLModels();
 
-            foreach (DataGridViewRow row in CsvDataGrid.Rows)
+            if (models == null || models.Count == 0)
             {
-                TransactSQLModel model = new TransactSQLModel();
-                
-                // selected columns
-                string[] colKeys = GetModelKeysFromIncludedColumns();
-                Dictionary<string, string> columnValues = new Dictionary<string, string>();
-
-                // where columns
-                string[] whereCols = GetSelectedWhereColumns();
-                Dictionary<string, string> whereValues = new Dictionary<string, string>();
-                
-                int addedColsCount = 0;
-                int whereColsCount = 0;
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    // break out of the loop if we've already gone through all added columns, or the first cell of
-                    // a row is null since this means the row is blank
-                    if (cell.Value == null || 
-                        (addedColsCount == ColumnsCheckedListBox.CheckedItems.Count && whereColsCount == WhereCheckedListBox.CheckedItems.Count))
-                    {
-                        break;
-                    }
-
-                    // get values for selected columns
-                    if (colKeys.Contains(cell.OwningColumn.HeaderText))
-                    {
-                        columnValues.Add(cell.OwningColumn.HeaderText, cell.Value!.ToString()!);
-                        addedColsCount++;
-                    }
-
-                    // since we're iterating each cell per row, get the value of the WHERE condition column
-                    if (whereCols.Contains(cell.OwningColumn.HeaderText))
-                    {
-                        whereValues.Add(cell.OwningColumn.HeaderText, cell.Value.ToString()!);
-                        whereColsCount++;
-                    }
-                }
-
-                // configure rest of model data
-                model.TargetTable = TableTextBox.Text;
-                model.ColumnValueDict = columnValues;
-                model.TransactionType = (TransactSQLType)TSQLTypeComboBox.SelectedItem!;
-                model.WhereValueDict = whereValues;
-                model.BuildTransactStatement();
-                models.Add(model);
+                return;
             }
-            
+
             ResultsTextBox.Visible = true;
-            //ExportSQLFileButton.Visible = true;
             TransactSQLExport.WriteTSQLToTextBox(models, ResultsTextBox);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private async void ExportSQLButton_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            List<TransactSQLModel>? models = GetTransactSQLModels();
+
+            if (models == null || models.Count == 0)
+            {
+                return;
+            }
+
+            await TransactSQLExport.WriteTSQLToFile(models);
         }
         catch (Exception ex)
         {

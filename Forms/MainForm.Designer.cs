@@ -32,16 +32,18 @@ partial class MainForm
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-        DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
         FileImportGroupBox = new GroupBox();
         FilePathLabel = new Label();
         CsvImportButton = new Button();
         TSQLGroupBox = new GroupBox();
+        ExportFileLabel = new Label();
+        ExportSQLButton = new Button();
         WhereCheckedListBox = new CheckedListBox();
-        GenerateTSQLButton = new Button();
+        CopyTSQLButton = new Button();
         WhereLabel = new Label();
         ColumnLabel = new Label();
         ColumnsCheckedListBox = new CheckedListBox();
@@ -51,6 +53,7 @@ partial class MainForm
         TSQLTypeComboBox = new ComboBox();
         CsvDataGrid = new DataGridView();
         Results = new GroupBox();
+        ExportedSQLLabel = new Label();
         ResultsTextBox = new TextBox();
         FileImportGroupBox.SuspendLayout();
         TSQLGroupBox.SuspendLayout();
@@ -66,7 +69,7 @@ partial class MainForm
         FileImportGroupBox.ForeColor = Color.White;
         FileImportGroupBox.Location = new Point(23, 23);
         FileImportGroupBox.Name = "FileImportGroupBox";
-        FileImportGroupBox.Size = new Size(715, 333);
+        FileImportGroupBox.Size = new Size(715, 337);
         FileImportGroupBox.TabIndex = 0;
         FileImportGroupBox.TabStop = false;
         FileImportGroupBox.Text = "File Import";
@@ -96,8 +99,10 @@ partial class MainForm
         // 
         // TSQLGroupBox
         // 
+        TSQLGroupBox.Controls.Add(ExportFileLabel);
+        TSQLGroupBox.Controls.Add(ExportSQLButton);
         TSQLGroupBox.Controls.Add(WhereCheckedListBox);
-        TSQLGroupBox.Controls.Add(GenerateTSQLButton);
+        TSQLGroupBox.Controls.Add(CopyTSQLButton);
         TSQLGroupBox.Controls.Add(WhereLabel);
         TSQLGroupBox.Controls.Add(ColumnLabel);
         TSQLGroupBox.Controls.Add(ColumnsCheckedListBox);
@@ -109,10 +114,35 @@ partial class MainForm
         TSQLGroupBox.ForeColor = Color.White;
         TSQLGroupBox.Location = new Point(758, 23);
         TSQLGroupBox.Name = "TSQLGroupBox";
-        TSQLGroupBox.Size = new Size(1093, 333);
+        TSQLGroupBox.Size = new Size(1093, 337);
         TSQLGroupBox.TabIndex = 1;
         TSQLGroupBox.TabStop = false;
         TSQLGroupBox.Text = "Configure T-SQL";
+        // 
+        // ExportFileLabel
+        // 
+        ExportFileLabel.AutoSize = true;
+        ExportFileLabel.Location = new Point(17, 279);
+        ExportFileLabel.Name = "ExportFileLabel";
+        ExportFileLabel.Size = new Size(0, 32);
+        ExportFileLabel.TabIndex = 10;
+        // 
+        // ExportSQLButton
+        // 
+        ExportSQLButton.BackColor = Color.FromArgb(197, 108, 134);
+        ExportSQLButton.Cursor = Cursors.Hand;
+        ExportSQLButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
+        ExportSQLButton.FlatAppearance.BorderSize = 5;
+        ExportSQLButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
+        ExportSQLButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
+        ExportSQLButton.FlatStyle = FlatStyle.Flat;
+        ExportSQLButton.Location = new Point(461, 265);
+        ExportSQLButton.Name = "ExportSQLButton";
+        ExportSQLButton.Size = new Size(295, 61);
+        ExportSQLButton.TabIndex = 9;
+        ExportSQLButton.Text = "Export to .sql";
+        ExportSQLButton.UseVisualStyleBackColor = false;
+        ExportSQLButton.Click += ExportSQLButton_Click;
         // 
         // WhereCheckedListBox
         // 
@@ -122,22 +152,22 @@ partial class MainForm
         WhereCheckedListBox.Size = new Size(351, 184);
         WhereCheckedListBox.TabIndex = 9;
         // 
-        // GenerateTSQLButton
+        // CopyTSQLButton
         // 
-        GenerateTSQLButton.BackColor = Color.FromArgb(197, 108, 134);
-        GenerateTSQLButton.Cursor = Cursors.Hand;
-        GenerateTSQLButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
-        GenerateTSQLButton.FlatAppearance.BorderSize = 5;
-        GenerateTSQLButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
-        GenerateTSQLButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
-        GenerateTSQLButton.FlatStyle = FlatStyle.Flat;
-        GenerateTSQLButton.Location = new Point(706, 267);
-        GenerateTSQLButton.Name = "GenerateTSQLButton";
-        GenerateTSQLButton.Size = new Size(295, 60);
-        GenerateTSQLButton.TabIndex = 8;
-        GenerateTSQLButton.Text = "Generate T-SQL";
-        GenerateTSQLButton.UseVisualStyleBackColor = false;
-        GenerateTSQLButton.Click += GenerateTSQLButton_Click;
+        CopyTSQLButton.BackColor = Color.FromArgb(197, 108, 134);
+        CopyTSQLButton.Cursor = Cursors.Hand;
+        CopyTSQLButton.FlatAppearance.BorderColor = Color.FromArgb(114, 90, 122);
+        CopyTSQLButton.FlatAppearance.BorderSize = 5;
+        CopyTSQLButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(114, 90, 122);
+        CopyTSQLButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(177, 88, 114);
+        CopyTSQLButton.FlatStyle = FlatStyle.Flat;
+        CopyTSQLButton.Location = new Point(762, 265);
+        CopyTSQLButton.Name = "CopyTSQLButton";
+        CopyTSQLButton.Size = new Size(295, 61);
+        CopyTSQLButton.TabIndex = 8;
+        CopyTSQLButton.Text = "Export to textbox";
+        CopyTSQLButton.UseVisualStyleBackColor = false;
+        CopyTSQLButton.Click += CopyTSQLButton_Click;
         // 
         // WhereLabel
         // 
@@ -201,56 +231,66 @@ partial class MainForm
         // 
         CsvDataGrid.AllowUserToAddRows = false;
         CsvDataGrid.AllowUserToDeleteRows = false;
-        dataGridViewCellStyle5.BackColor = Color.FromArgb(255, 117, 130);
-        dataGridViewCellStyle5.Font = new Font("Segoe UI Emoji", 12F);
-        dataGridViewCellStyle5.ForeColor = Color.White;
-        dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(114, 90, 122);
-        CsvDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+        dataGridViewCellStyle1.BackColor = Color.FromArgb(255, 117, 130);
+        dataGridViewCellStyle1.Font = new Font("Segoe UI Emoji", 12F);
+        dataGridViewCellStyle1.ForeColor = Color.White;
+        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(114, 90, 122);
+        CsvDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
         CsvDataGrid.BackgroundColor = Color.FromArgb(53, 92, 125);
-        dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        dataGridViewCellStyle6.BackColor = Color.FromArgb(114, 90, 122);
-        dataGridViewCellStyle6.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        dataGridViewCellStyle6.ForeColor = Color.White;
-        dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(197, 108, 134);
-        dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-        CsvDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle2.BackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle2.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle2.ForeColor = Color.White;
+        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(197, 108, 134);
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        CsvDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
         CsvDataGrid.ColumnHeadersHeight = 60;
-        dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        dataGridViewCellStyle7.BackColor = Color.FromArgb(197, 108, 134);
-        dataGridViewCellStyle7.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        dataGridViewCellStyle7.ForeColor = Color.White;
-        dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(114, 90, 122);
-        dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
-        CsvDataGrid.DefaultCellStyle = dataGridViewCellStyle7;
-        CsvDataGrid.Location = new Point(23, 362);
+        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle3.BackColor = Color.FromArgb(197, 108, 134);
+        dataGridViewCellStyle3.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle3.ForeColor = Color.White;
+        dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+        CsvDataGrid.DefaultCellStyle = dataGridViewCellStyle3;
+        CsvDataGrid.Location = new Point(23, 366);
         CsvDataGrid.Name = "CsvDataGrid";
         CsvDataGrid.ReadOnly = true;
-        dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        dataGridViewCellStyle8.BackColor = Color.FromArgb(114, 90, 122);
-        dataGridViewCellStyle8.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        dataGridViewCellStyle8.ForeColor = Color.White;
-        dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-        CsvDataGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+        dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle4.BackColor = Color.FromArgb(114, 90, 122);
+        dataGridViewCellStyle4.Font = new Font("Segoe UI Emoji", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dataGridViewCellStyle4.ForeColor = Color.White;
+        dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+        CsvDataGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
         CsvDataGrid.RowHeadersVisible = false;
         CsvDataGrid.RowHeadersWidth = 62;
-        CsvDataGrid.Size = new Size(1085, 555);
+        CsvDataGrid.Size = new Size(1085, 551);
         CsvDataGrid.TabIndex = 2;
         // 
         // Results
         // 
+        Results.Controls.Add(ExportedSQLLabel);
         Results.Controls.Add(ResultsTextBox);
         Results.ForeColor = Color.White;
-        Results.Location = new Point(1133, 362);
+        Results.Location = new Point(1133, 366);
         Results.Name = "Results";
         Results.Padding = new Padding(10);
-        Results.Size = new Size(718, 555);
+        Results.Size = new Size(718, 551);
         Results.TabIndex = 3;
         Results.TabStop = false;
         Results.Text = "Results";
+        // 
+        // ExportedSQLLabel
+        // 
+        ExportedSQLLabel.AutoSize = true;
+        ExportedSQLLabel.Font = new Font("Segoe UI Emoji", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        ExportedSQLLabel.Location = new Point(13, 479);
+        ExportedSQLLabel.Name = "ExportedSQLLabel";
+        ExportedSQLLabel.Size = new Size(0, 32);
+        ExportedSQLLabel.TabIndex = 1;
         // 
         // ResultsTextBox
         // 
@@ -260,7 +300,7 @@ partial class MainForm
         ResultsTextBox.Name = "ResultsTextBox";
         ResultsTextBox.ReadOnly = true;
         ResultsTextBox.ScrollBars = ScrollBars.Vertical;
-        ResultsTextBox.Size = new Size(692, 491);
+        ResultsTextBox.Size = new Size(692, 487);
         ResultsTextBox.TabIndex = 0;
         ResultsTextBox.Visible = false;
         // 
@@ -320,8 +360,11 @@ partial class MainForm
 
     #endregion
 
-    private Button GenerateTSQLButton;
+    private Button CopyTSQLButton;
     private GroupBox Results;
     private TextBox ResultsTextBox;
     private CheckedListBox WhereCheckedListBox;
+    private Button ExportSQLButton;
+    private Label ExportFileLabel;
+    private Label ExportedSQLLabel;
 }
