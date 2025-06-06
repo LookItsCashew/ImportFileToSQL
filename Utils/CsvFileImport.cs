@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.VisualBasic.FileIO;
 
-namespace CustomerImportSQL;
+namespace CustomerImportSQL.Utils;
 
 public static class CsvFileImport
 {

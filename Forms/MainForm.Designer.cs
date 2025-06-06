@@ -306,7 +306,8 @@ partial class MainForm
         // 
         // MainForm
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(15F, 37F);
+        AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.FromArgb(53, 92, 125);
         ClientSize = new Size(1874, 940);
         Controls.Add(Results);
