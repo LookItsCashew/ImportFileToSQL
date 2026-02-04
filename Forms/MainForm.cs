@@ -113,8 +113,6 @@ public partial class MainForm : Form
 
     private List<TransactSQLModel>? GetTransactSQLModels()
     {
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
         List<TransactSQLModel> models = new List<TransactSQLModel>();
         try
         {
@@ -177,8 +175,6 @@ public partial class MainForm : Form
         {
             MessageBox.Show(ex.Message);
         }
-        sw.Stop();
-        MessageBox.Show($"Time to create objects: {sw.ElapsedMilliseconds.ToString()}ms");
         return models;
     }
 
@@ -257,7 +253,6 @@ public partial class MainForm : Form
     {
         try
         {
-            Stopwatch sw = Stopwatch.StartNew();
             List<TransactSQLModel>? models = GetTransactSQLModels();
 
             if (models == null || models.Count == 0)
@@ -266,8 +261,6 @@ public partial class MainForm : Form
             }
 
             await TransactSQLExport.WriteTSQLToFile(models);
-            sw.Stop();
-            MessageBox.Show($"Time to export: {sw.ElapsedMilliseconds.ToString()}ms");
         }
         catch (Exception ex)
         {

@@ -18,7 +18,6 @@ public static class TransactSQLExport
 
     public static void WriteTSQLToTextBox(List<TransactSQLModel> models, TextBox textBox)
     {
-        Stopwatch sw = Stopwatch.StartNew();
         string[] statements = new string[models.Count];
         try
         {
@@ -28,8 +27,6 @@ public static class TransactSQLExport
             }
 
             textBox.Lines = statements;
-            sw.Stop();
-            MessageBox.Show($"Time to paste objects: {sw.ElapsedMilliseconds.ToString()}ms");
         }
         catch (Exception ex)
         {
